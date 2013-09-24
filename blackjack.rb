@@ -1,3 +1,7 @@
+# idea for odds correction: array with all possible cards.
+# Deal/hit selects from array at random by using rand() within array.length and
+# Deleting from array after selection
+
 def sum_cards(card_array)
 	sum = 0;
 	card_array.each do |card|
@@ -36,8 +40,27 @@ def print_cards (hand)
 	puts ""
 end
 
+def create_deck()
+
+	$deck = Array.new()
+
+	for x in 2..14 
+		$deck << x
+	end
+
+	$deck = $deck * 4
+end
+
+def random_index(deck)
+	index=rand(deck.length-1)
+	return index
+end
+
 def deal_card()
-	card = 2+rand(13)
+	index=rand($deck.length-1)
+	card = $deck[index]
+	$deck.delete_at(index)
+	return card
 end
 
 def get_bet(balance)
@@ -77,6 +100,7 @@ print "\nYou've got $#{balance} to play with. \nHow much do you want to bet?  "
 bet = get_bet(balance)
 
 while bet!="exit" && balance>0
+	create_deck()
 	dealer = [deal_card(), deal_card()]
 	player = [deal_card(), deal_card()]
 
