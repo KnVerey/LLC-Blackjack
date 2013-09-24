@@ -1,7 +1,3 @@
-# idea for odds correction: array with all possible cards.
-# Deal/hit selects from array at random by using rand() within array.length and
-# Deleting from array after selection
-
 def sum_cards(card_array)
 	sum = 0;
 	card_array.each do |card|
@@ -23,19 +19,23 @@ def sum_cards(card_array)
 	return sum
 end
 
-def print_cards (hand)
+def print_card (card)
+	if card == 11
+		print " -A- "
+	elsif card==12
+		print " -J- "
+	elsif card==13
+		print " -Q- "
+	elsif card==14
+		print " -K- "
+	else				
+		print " -#{card}- "
+	end
+end
+
+def print_hand (hand)
 	hand.each do |card|
-		if card == 11
-			print " -A- "
-		elsif card==12
-			print " -J- "
-		elsif card==13
-			print " -Q- "
-		elsif card==14
-			print " -K- "
-		else				
-			print " -#{card}- "
-		end
+		print_card(card)
 	end
 	puts ""
 end
@@ -101,11 +101,15 @@ bet = get_bet(balance)
 
 while bet!="exit" && balance>0
 	create_deck()
-	dealer = [deal_card(), deal_card()]
-	player = [deal_card(), deal_card()]
+	player = [deal_card()]
+	dealer = [deal_card()]
+	player << deal_card()
+	dealer << deal_card()
 
-	print "\nYour starting hand is:"
-	print_cards(player)
+	print "\nThe dealer's face-up card is: "
+	print_card(dealer[0])
+	print "\n\nYour starting hand is:"
+	print_hand(player)
 	print "Your starting total is #{sum_cards(player)}. "
 
 	while sum_cards(player)<21
@@ -115,7 +119,7 @@ while bet!="exit" && balance>0
 		if move=="h"
 			player << deal_card()
 			print "\nYour new hand is:"
-			print_cards(player)
+			print_hand(player)
 			print "Your new total is #{sum_cards(player)}. "
 		elsif move=="s"
 			break
@@ -134,7 +138,7 @@ while bet!="exit" && balance>0
 		balance = balance - bet
 	else
 		print "\nThe dealer's starting hand is:"
-		print_cards(dealer)
+		print_hand(dealer)
 		puts "The dealer started with a total of #{sum_cards(dealer)}.\n"
 		sleep 3
 
@@ -143,7 +147,7 @@ while bet!="exit" && balance>0
 			sleep 1
 			dealer << deal_card()
 			print "The dealer's new hand is:"
-			print_cards(dealer)
+			print_hand(dealer)
 			sleep 3
 			puts "The dealer's new total is #{sum_cards(dealer)}.\n"
 			sleep 3
